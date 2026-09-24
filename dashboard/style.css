@@ -1,0 +1,1109 @@
+/* ============================================================
+   TOMATO LEAF HEALTH SCANNER
+   Dashboard Stylesheet
+   ============================================================ */
+
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+
+:root {
+
+    --page-background: #0f172a;
+    --surface: #111827;
+    --surface-elevated: #151e31;
+    --surface-hover: #1b263b;
+
+    --border: #334155;
+    --border-light: #475569;
+    --border-accent: #0ea5e9;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+
+    --healthy: #22c55e;
+    --disease: #ef4444;
+    --uncertain: #f59e0b;
+
+    --shadow:
+        0 10px 25px rgba(0, 0, 0, 0.20);
+
+    --radius-small: 8px;
+    --radius-medium: 12px;
+    --radius-large: 14px;
+
+    --content-width: 1200px;
+
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(14, 165, 233, 0.06),
+            transparent 35%
+        ),
+        var(--page-background);
+
+    color: var(--text-primary);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    padding: 32px 24px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+
+.container {
+
+    width: 100%;
+    max-width: var(--content-width);
+
+    margin: 0 auto;
+
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.page-header {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+.page-header h1 {
+
+    color: var(--text-primary);
+
+    font-size: clamp(
+        1.8rem,
+        4vw,
+        2.5rem
+    );
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+}
+
+
+.subtitle {
+
+    max-width: 700px;
+
+    margin:
+        10px
+        auto
+        0;
+
+    color: var(--text-muted);
+
+    font-size: 1rem;
+
+}
+
+
+/* ============================================================
+   COMMON PANEL / CARD
+   ============================================================ */
+
+.panel,
+.card,
+.stat-card {
+
+    background: var(--surface);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius-medium);
+
+    box-shadow:
+        var(--shadow);
+
+}
+
+
+.panel {
+
+    padding: 24px;
+
+    margin-bottom: 24px;
+
+}
+
+
+.panel h2 {
+
+    color: var(--text-primary);
+
+    font-size: 1.35rem;
+
+    line-height: 1.3;
+
+}
+
+
+.section-header {
+
+    margin-bottom: 18px;
+
+}
+
+
+.section-header p {
+
+    margin-top: 5px;
+
+    color: var(--text-muted);
+
+    font-size: 0.9rem;
+
+}
+
+
+/* ============================================================
+   DETECTOR
+   ============================================================ */
+
+.detector-panel {
+
+    border-color:
+        var(--border-accent);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14, 165, 233, 0.035),
+            var(--surface)
+        );
+
+}
+
+
+.detector-header {
+
+    margin-bottom: 20px;
+
+}
+
+
+.detector-header h2 {
+
+    font-size: 1.35rem;
+
+}
+
+
+.detector-description {
+
+    margin-top: 5px;
+
+    color: var(--text-muted);
+
+    font-size: 0.9rem;
+
+}
+
+
+/* ============================================================
+   DETECTOR CONTROLS
+   IMPORTANT:
+   All buttons are controlled from ONE flex container.
+   ============================================================ */
+
+.detector-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    width: 100%;
+
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.button {
+
+    appearance: none;
+
+    border: none;
+
+    border-radius:
+        var(--radius-small);
+
+    padding:
+        11px
+        18px;
+
+    min-height: 44px;
+
+    color: var(--text-primary);
+
+    font-size: 0.95rem;
+
+    font-weight: 700;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.18s ease,
+        transform 0.18s ease,
+        opacity 0.18s ease;
+
+}
+
+
+.button:hover:not(:disabled) {
+
+    transform: translateY(-1px);
+
+}
+
+
+.button:active:not(:disabled) {
+
+    transform: translateY(0);
+
+}
+
+
+.button:focus-visible {
+
+    outline:
+        2px solid
+        #38bdf8;
+
+    outline-offset: 2px;
+
+}
+
+
+.button:disabled {
+
+    cursor: not-allowed;
+
+    opacity: 0.5;
+
+}
+
+
+/* Primary */
+
+.button-primary {
+
+    background: var(--primary);
+
+}
+
+
+.button-primary:hover:not(:disabled) {
+
+    background: var(--primary-hover);
+
+}
+
+
+/* Secondary */
+
+.button-secondary {
+
+    background: #334155;
+
+}
+
+
+.button-secondary:hover:not(:disabled) {
+
+    background: #475569;
+
+}
+
+
+/* Analyze */
+
+.button-analyze {
+
+    background: #036fa8;
+
+}
+
+
+.button-analyze:hover:not(:disabled) {
+
+    background: #0284c7;
+
+}
+
+
+/* Danger */
+
+.button-danger {
+
+    background: #b42318;
+
+}
+
+
+.button-danger:hover:not(:disabled) {
+
+    background: #dc2626;
+
+}
+
+
+/* ============================================================
+   CAMERA / IMAGE PREVIEW
+   ============================================================ */
+
+.media-container {
+
+    width: 100%;
+
+}
+
+
+#camera-preview {
+
+    display: none;
+
+    width: 100%;
+
+    max-width: 720px;
+
+    max-height: 480px;
+
+    margin:
+        20px
+        auto
+        0;
+
+    object-fit: contain;
+
+    border:
+        1px solid
+        var(--border-light);
+
+    border-radius:
+        var(--radius-medium);
+
+    background: #020617;
+
+}
+
+
+.preview-container {
+
+    width: 100%;
+
+    max-width: 720px;
+
+    margin: 0 auto;
+
+}
+
+
+#selected-image {
+
+    display: none;
+
+    width: 100%;
+
+    max-height: 480px;
+
+    margin-top: 20px;
+
+    object-fit: contain;
+
+    border:
+        1px solid
+        var(--border-light);
+
+    border-radius:
+        var(--radius-medium);
+
+    background: #020617;
+
+}
+
+
+/* ============================================================
+   STATUS MESSAGE
+   ============================================================ */
+
+.analysis-status {
+
+    width: 100%;
+
+    margin-top: 16px;
+
+    color: var(--text-muted);
+
+    font-size: 0.92rem;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* ============================================================
+   ANALYSIS RESULT
+   ============================================================ */
+
+.analysis-result {
+
+    width: 100%;
+
+    margin-top: 16px;
+
+    padding:
+        14px
+        16px;
+
+    border-top:
+        1px solid
+        var(--border);
+
+    border-radius:
+        0 0
+        var(--radius-small)
+        var(--radius-small);
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+.analysis-result.result-healthy {
+
+    color: var(--healthy);
+
+    background:
+        rgba(34, 197, 94, 0.08);
+
+    border-top-color:
+        rgba(34, 197, 94, 0.35);
+
+}
+
+
+.analysis-result.result-disease {
+
+    color: var(--disease);
+
+    background:
+        rgba(239, 68, 68, 0.08);
+
+    border-top-color:
+        rgba(239, 68, 68, 0.35);
+
+}
+
+
+.analysis-result.result-uncertain {
+
+    color: var(--uncertain);
+
+    background:
+        rgba(245, 158, 11, 0.08);
+
+    border-top-color:
+        rgba(245, 158, 11, 0.35);
+
+}
+
+
+/* ============================================================
+   SUMMARY CARDS
+   ============================================================ */
+
+.summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            minmax(0, 1fr)
+        );
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+
+}
+
+
+.card {
+
+    min-width: 0;
+
+    padding: 20px;
+
+}
+
+
+.label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--text-muted);
+
+    font-size: 0.8rem;
+
+}
+
+
+.value {
+
+    display: block;
+
+    color: var(--text-primary);
+
+    font-size: 1.2rem;
+
+    font-weight: 700;
+
+    line-height: 1.35;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+.status-online {
+
+    color: var(--healthy);
+
+}
+
+
+/* Prediction states */
+
+#latest-prediction.result-healthy,
+#latest-confidence.result-healthy {
+
+    color: var(--healthy);
+
+}
+
+
+#latest-prediction.result-disease,
+#latest-confidence.result-disease {
+
+    color: var(--disease);
+
+}
+
+
+#latest-prediction.result-uncertain,
+#latest-confidence.result-uncertain {
+
+    color: var(--uncertain);
+
+}
+
+
+/* ============================================================
+   STATISTICS
+   ============================================================ */
+
+.statistics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+
+}
+
+
+.stat-card {
+
+    min-width: 0;
+
+    padding: 22px;
+
+}
+
+
+.stat-card h3 {
+
+    margin-bottom: 10px;
+
+    color: var(--text-secondary);
+
+    font-size: 1.05rem;
+
+}
+
+
+.stat-card p {
+
+    color: var(--healthy);
+
+    font-size: 2.2rem;
+
+    font-weight: 700;
+
+    line-height: 1.1;
+
+}
+
+
+/* ============================================================
+   PREDICTION TABLE
+   ============================================================ */
+
+.table-container {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-radius:
+        var(--radius-small);
+
+}
+
+
+table {
+
+    width: 100%;
+
+    min-width: 650px;
+
+    border-collapse: collapse;
+
+}
+
+
+th,
+td {
+
+    padding:
+        13px
+        12px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    text-align: left;
+
+    white-space: nowrap;
+
+}
+
+
+th {
+
+    color: var(--text-secondary);
+
+    background:
+        rgba(
+            148,
+            163,
+            184,
+            0.05
+        );
+
+    font-size: 0.9rem;
+
+}
+
+
+td {
+
+    color: var(--text-secondary);
+
+    font-size: 0.9rem;
+
+}
+
+
+tbody tr:hover {
+
+    background:
+        rgba(
+            148,
+            163,
+            184,
+            0.035
+        );
+
+}
+
+
+.prediction-status-healthy,
+.prediction-confidence-healthy {
+
+    color: var(--healthy);
+
+    font-weight: 700;
+
+}
+
+
+.prediction-status-disease,
+.prediction-confidence-disease {
+
+    color: var(--disease);
+
+    font-weight: 700;
+
+}
+
+
+.prediction-status-uncertain,
+.prediction-confidence-uncertain {
+
+    color: var(--uncertain);
+
+    font-weight: 700;
+
+}
+
+
+/* ============================================================
+   LATEST IMAGE
+   ============================================================ */
+
+.image-panel {
+
+    text-align: center;
+
+}
+
+
+.latest-image-container {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 120px;
+
+}
+
+
+#latest-image {
+
+    display: none;
+
+    width: auto;
+
+    max-width: 100%;
+
+    max-height: 480px;
+
+    margin: 0 auto;
+
+    border:
+        1px solid
+        var(--border-light);
+
+    border-radius:
+        var(--radius-medium);
+
+    object-fit: contain;
+
+}
+
+
+.no-image-message {
+
+    color: var(--text-muted);
+
+    font-size: 0.9rem;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1050px) {
+
+    .summary-grid {
+
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
+
+    }
+
+    .summary-grid .card:last-child {
+
+        grid-column:
+            span 1;
+
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL TABLET
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    body {
+
+        padding:
+            24px
+            16px;
+
+    }
+
+
+    .summary-grid {
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+    }
+
+
+    .statistics-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    body {
+
+        padding:
+            18px
+            12px;
+
+    }
+
+
+    .page-header {
+
+        margin-bottom: 22px;
+
+    }
+
+
+    .page-header h1 {
+
+        font-size: 1.7rem;
+
+    }
+
+
+    .subtitle {
+
+        font-size: 0.9rem;
+
+    }
+
+
+    .panel {
+
+        padding: 18px;
+
+        margin-bottom: 18px;
+
+    }
+
+
+    /* Stack ALL detector buttons cleanly */
+
+    .detector-controls {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        width: 100%;
+
+    }
+
+
+    .detector-controls .button {
+
+        width: 100%;
+
+    }
+
+
+    .summary-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+
+    }
+
+
+    .statistics-grid {
+
+        gap: 12px;
+
+    }
+
+
+    .stat-card p {
+
+        font-size: 2rem;
+
+    }
+
+
+    th,
+    td {
+
+        padding:
+            11px
+            10px;
+
+    }
+
+
+    .analysis-result {
+
+        font-size: 1rem;
+
+    }
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+button:focus-visible,
+input:focus-visible {
+
+    outline:
+        2px solid
+        #38bdf8;
+
+    outline-offset: 2px;
+
+}
+
+
+/* ============================================================
+   REDUCE MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+
+        scroll-behavior: auto;
+
+    }
+
+    *,
+    *::before,
+    *::after {
+
+        transition: none !important;
+
+    }
+
+}

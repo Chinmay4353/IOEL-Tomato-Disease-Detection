@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="application-name"
+        content="Tomato Plant Detection Dashboard"
+    >
+
+    <meta
+        name="description"
+        content="Tomato leaf health and disease detection dashboard."
+    >
+
+    <title>Tomato Leaf Health Scanner</title>
+
+    <link
+        rel="stylesheet"
+        href="/dashboard/style.css"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
+
+        <header class="page-header">
+
+            <h1>
+                Tomato Leaf Health Scanner
+            </h1>
+
+            <p class="subtitle">
+                Upload a leaf photo or use your camera to
+                identify health and disease.
+            </p>
+
+        </header>
+
+
+        <!-- =====================================================
+             LEAF HEALTH DETECTION
+        ====================================================== -->
+
+        <section
+            class="panel detector-panel"
+            aria-labelledby="detector-title"
+        >
+
+            <div class="detector-header">
+
+                <div>
+
+                    <h2 id="detector-title">
+                        Leaf Health Detection
+                    </h2>
+
+                    <p class="detector-description">
+                        Select a tomato leaf image or capture one
+                        using your camera.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- DETECTOR CONTROLS -->
+
+            <div class="detector-controls">
+
+                <button
+                    id="camera-button"
+                    class="button button-primary"
+                    type="button"
+                >
+                    Open Camera
+                </button>
+
+
+                <button
+                    id="upload-button"
+                    class="button button-secondary"
+                    type="button"
+                >
+                    Upload JPG or PNG
+                </button>
+
+
+                <button
+                    id="capture-button"
+                    class="button button-secondary"
+                    type="button"
+                    hidden
+                >
+                    Capture Leaf
+                </button>
+
+
+                <button
+                    id="analyze-button"
+                    class="button button-analyze"
+                    type="button"
+                    disabled
+                >
+                    Check Leaf Health
+                </button>
+
+
+                <button
+                    id="clear-button"
+                    class="button button-danger"
+                    type="button"
+                    hidden
+                >
+                    Clear Image
+                </button>
+
+
+                <input
+                    id="image-input"
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.webp,.bmp,image/*"
+                    hidden
+                >
+
+            </div>
+
+
+            <!-- CAMERA -->
+
+            <div class="media-container">
+
+                <video
+                    id="camera-preview"
+                    autoplay
+                    playsinline
+                    muted
+                    aria-label="Camera preview"
+                ></video>
+
+                <canvas
+                    id="capture-canvas"
+                    hidden
+                ></canvas>
+
+            </div>
+
+
+            <!-- SELECTED IMAGE -->
+
+            <div class="preview-container">
+
+                <img
+                    id="selected-image"
+                    alt="Selected tomato leaf preview"
+                    hidden
+                >
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+                id="analysis-status"
+                class="analysis-status"
+                role="status"
+                aria-live="polite"
+            >
+                Choose an image or open the camera.
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div
+                id="analysis-result"
+                class="analysis-result"
+                hidden
+                aria-live="polite"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SUMMARY CARDS
+        ====================================================== -->
+
+        <section
+            class="summary-grid"
+            aria-label="Detection summary"
+        >
+
+            <article class="card">
+
+                <span class="label">
+                    Device Status
+                </span>
+
+                <strong
+                    id="device-status"
+                    class="value status-online"
+                >
+                    ONLINE
+                </strong>
+
+            </article>
+
+
+            <article class="card">
+
+                <span class="label">
+                    Latest Prediction
+                </span>
+
+                <strong
+                    id="latest-prediction"
+                    class="value"
+                >
+                    -
+                </strong>
+
+            </article>
+
+
+            <article class="card">
+
+                <span class="label">
+                    Confidence
+                </span>
+
+                <strong
+                    id="latest-confidence"
+                    class="value"
+                >
+                    -
+                </strong>
+
+            </article>
+
+
+            <article class="card">
+
+                <span class="label">
+                    Last Detection
+                </span>
+
+                <strong
+                    id="last-detection"
+                    class="value"
+                >
+                    -
+                </strong>
+
+            </article>
+
+
+            <article class="card">
+
+                <span class="label">
+                    Total Predictions
+                </span>
+
+                <strong
+                    id="total-predictions"
+                    class="value"
+                >
+                    0
+                </strong>
+
+            </article>
+
+        </section>
+
+
+        <!-- =====================================================
+             STATISTICS
+        ====================================================== -->
+
+        <section
+            class="statistics-grid"
+            aria-label="Detection statistics"
+        >
+
+            <article class="stat-card">
+
+                <h3>
+                    Healthy Leaves
+                </h3>
+
+                <p id="tomato-count">
+                    0
+                </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <h3>
+                    Disease Results
+                </h3>
+
+                <p id="not-tomato-count">
+                    0
+                </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <h3>
+                    Average Confidence
+                </h3>
+
+                <p id="average-confidence">
+                    0%
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <!-- =====================================================
+             RECENT PREDICTIONS
+        ====================================================== -->
+
+        <section
+            class="panel"
+            aria-labelledby="predictions-title"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2 id="predictions-title">
+                        Recent Predictions
+                    </h2>
+
+                    <p>
+                        Latest detection results recorded
+                        by the system.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th scope="col">
+                                Time
+                            </th>
+
+                            <th scope="col">
+                                Device
+                            </th>
+
+                            <th scope="col">
+                                Prediction
+                            </th>
+
+                            <th scope="col">
+                                Confidence
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="prediction-table-body">
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="table-empty"
+                            >
+                                Loading predictions...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             LATEST CAPTURED IMAGE
+        ====================================================== -->
+
+        <section
+            class="panel image-panel"
+            aria-labelledby="latest-image-title"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2 id="latest-image-title">
+                        Latest Captured Image
+                    </h2>
+
+                    <p>
+                        Most recently processed image from
+                        the detection system.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="latest-image-container">
+
+                <!--
+                    IMPORTANT:
+                    hidden by default.
+                    JavaScript shows this only when
+                    the image loads successfully.
+                -->
+
+                <img
+                    id="latest-image"
+                    alt="Latest captured tomato leaf image"
+                    hidden
+                >
+
+
+                <!--
+                    IMPORTANT:
+                    also hidden by default.
+                    JavaScript shows this only when
+                    there is no valid image.
+                -->
+
+                <p
+                    id="no-image-message"
+                    class="no-image-message"
+                    hidden
+                >
+                    No captured image available.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- DASHBOARD JAVASCRIPT -->
+
+    <script src="/dashboard/script.js"></script>
+
+</body>
+</html>
