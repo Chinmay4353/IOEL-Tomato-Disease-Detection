@@ -1107,3 +1107,32 @@ input:focus-visible {
     }
 
 }
+.analysis-result-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.analysis-result-main strong {
+    font-size: 1rem;
+}
+
+.analysis-result-main span {
+    font-size: 0.9rem;
+}
+
+.analysis-recommendation {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.analysis-recommendation strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.analysis-recommendation p {
+    margin: 0;
+    line-height: 1.5;
+}

@@ -1,9 +1,14 @@
-const API_URL = '/api/latest';
+﻿const API_URL = '/api/latest';
 const PREDICTIONS_URL = '/api/predictions';
 const PREDICT_IMAGE_URL = '/api/predict-image';
 
-const CONFIDENCE_THRESHOLD = 0.70;
 const REFRESH_INTERVAL_MS = 5000;
+
+const PREDICTION_STATUS = Object.freeze({
+    ACCEPTED: 'ACCEPTED',
+    UNCERTAIN: 'UNCERTAIN',
+    NOT_TOMATO: 'NOT_TOMATO'
+});
 const MAX_RECENT_PREDICTIONS = 8;
 
 let selectedFile = null;
@@ -123,18 +128,35 @@ function formatPredictionLabel(prediction) {
         .replace(/\b\w/g, character => character.toUpperCase());
 }
 
-function getPredictionDisplay(prediction, confidence) {
+function getPredictionDisplay(
+    prediction,
+    confidence,
+    status = PREDICTION_STATUS.ACCEPTED
+) {
     const confidenceValue = getConfidenceValue(confidence);
     const confidenceText = formatConfidence(confidenceValue);
 
-    if (confidenceValue < CONFIDENCE_THRESHOLD) {
+    if (status === PREDICTION_STATUS.NOT_TOMATO) {
+        return {
+            label: 'Not a Tomato Leaf / Plant Image',
+            confidence: confidenceText,
+            statusClass: 'result-uncertain',
+            tableClass: 'prediction-status-uncertain',
+            confidenceClass: 'prediction-confidence-uncertain',
+            isLowConfidence: false,
+            isNotTomato: true
+        };
+    }
+
+    if (status === PREDICTION_STATUS.UNCERTAIN) {
         return {
             label: 'Low Confidence / Uncertain',
             confidence: confidenceText,
             statusClass: 'result-uncertain',
             tableClass: 'prediction-status-uncertain',
             confidenceClass: 'prediction-confidence-uncertain',
-            isLowConfidence: true
+            isLowConfidence: true,
+            isNotTomato: false
         };
     }
 
@@ -149,7 +171,8 @@ function getPredictionDisplay(prediction, confidence) {
             statusClass: 'result-healthy',
             tableClass: 'prediction-status-healthy',
             confidenceClass: 'prediction-confidence-healthy',
-            isLowConfidence: false
+            isLowConfidence: false,
+            isNotTomato: false
         };
     }
 
@@ -159,7 +182,8 @@ function getPredictionDisplay(prediction, confidence) {
         statusClass: 'result-disease',
         tableClass: 'prediction-status-disease',
         confidenceClass: 'prediction-confidence-disease',
-        isLowConfidence: false
+        isLowConfidence: false,
+        isNotTomato: false
     };
 }
 
@@ -493,14 +517,20 @@ function setAnalysisStatus(message) {
     }
 }
 
-function showAnalysisResult(prediction, confidence) {
+function showAnalysisResult(
+    prediction,
+    confidence,
+    status,
+    recommendation
+) {
     if (!analysisResult) {
         return;
     }
 
     const display = getPredictionDisplay(
         prediction,
-        confidence
+        confidence,
+        status
     );
 
     clearStatusClasses(analysisResult);
@@ -511,15 +541,40 @@ function showAnalysisResult(prediction, confidence) {
 
     analysisResult.hidden = false;
 
-    analysisResult.textContent =
-        display.isLowConfidence
-            ? `⚠ ${display.label} · ${display.confidence} confidence`
-            : `${display.label} · ${display.confidence} confidence`;
+    const prefix = display.isNotTomato
+        ? '⚠️ '
+        : display.isLowConfidence
+            ? '⚠️ '
+            : '';
+
+    const safeRecommendation = recommendation
+        ? String(recommendation)
+        : '';
+
+    analysisResult.innerHTML = `
+        <div class="analysis-result-main">
+            <strong>${prefix}${display.label}</strong>
+            <span>${display.confidence} confidence</span>
+        </div>
+
+        ${
+            safeRecommendation
+                ? `
+                    <div class="analysis-recommendation">
+                        <strong>What to do next</strong>
+                        <p>${safeRecommendation}</p>
+                    </div>
+                `
+                : ''
+        }
+    `;
 
     setAnalysisStatus(
-        display.isLowConfidence
-            ? 'Analysis complete. The model is uncertain about this image.'
-            : 'Analysis complete.'
+        status === PREDICTION_STATUS.NOT_TOMATO
+            ? 'This image was not identified as a tomato leaf/plant image.'
+            : status === PREDICTION_STATUS.UNCERTAIN
+                ? 'Analysis complete. Capture a clearer image for a more reliable result.'
+                : 'Analysis complete.'
     );
 }
 
@@ -562,16 +617,22 @@ async function analyzeSelectedImage() {
         );
 
         const prediction =
-            result?.label ??
             result?.prediction ??
+            result?.label ??
             '';
 
         const confidence =
             getConfidenceValue(result?.confidence);
 
+        const status =
+            result?.status ??
+            PREDICTION_STATUS.UNCERTAIN;
+
         showAnalysisResult(
             prediction,
-            confidence
+            confidence,
+            status,
+            result?.recommendation
         );
 
         await fetchDashboardData();
@@ -679,7 +740,8 @@ function updateLatestPredictionCard(latestData) {
     const display = confidence !== null
         ? getPredictionDisplay(
             prediction,
-            confidence
+            confidence,
+            latestData?.status
         )
         : {
             label: formatPredictionLabel(prediction),
@@ -725,16 +787,23 @@ function updateStatistics(predictions) {
     const total = predictions.length;
 
     const confirmedHealthy = predictions.filter(item => {
+        const status =
+            item?.status ??
+            PREDICTION_STATUS.ACCEPTED;
+
         return (
+            status === PREDICTION_STATUS.ACCEPTED &&
             String(item?.prediction || '')
                 .trim()
-                .toLowerCase() === 'healthy' &&
-            getConfidenceValue(item?.confidence) >=
-                CONFIDENCE_THRESHOLD
+                .toLowerCase() === 'healthy'
         );
     }).length;
 
     const confirmedDisease = predictions.filter(item => {
+        const status =
+            item?.status ??
+            PREDICTION_STATUS.ACCEPTED;
+
         const prediction = String(
             item?.prediction || ''
         )
@@ -742,10 +811,10 @@ function updateStatistics(predictions) {
             .toLowerCase();
 
         return (
+            status === PREDICTION_STATUS.ACCEPTED &&
             prediction &&
             prediction !== 'healthy' &&
-            getConfidenceValue(item?.confidence) >=
-                CONFIDENCE_THRESHOLD
+            prediction !== 'not_tomato'
         );
     }).length;
 
@@ -870,7 +939,9 @@ function createPredictionRow(item) {
     const display =
         getPredictionDisplay(
             prediction,
-            confidence
+            confidence,
+            item?.status ??
+                PREDICTION_STATUS.ACCEPTED
         );
 
     const timeCell =
@@ -894,7 +965,7 @@ function createPredictionRow(item) {
 
     predictionCell.textContent =
         display.isLowConfidence
-            ? `⚠ ${display.label}`
+            ? `âš  ${display.label}`
             : display.label;
 
     confidenceCell.textContent =
@@ -1017,3 +1088,5 @@ function resetDetectorState() {
    ============================================================ */
 
 initializeDashboard();
+
+
