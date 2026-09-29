@@ -1,0 +1,54 @@
+Tomato Disease CNN Model - Inference Specification
+
+Model:
+- Architecture: EfficientNet-B3
+- Framework: PyTorch
+- Task: 10-class tomato disease classification
+- Input type: RGB image
+- Input size: 300 x 300 pixels
+
+Inference preprocessing:
+1. Load image as RGB.
+2. Resize shortest-side to 320 pixels.
+3. Center crop to 300 x 300 pixels.
+4. Convert image to tensor.
+5. Normalize using ImageNet normalization.
+
+Normalization mean:
+[0.485, 0.456, 0.406]
+
+Normalization standard deviation:
+[0.229, 0.224, 0.225]
+
+Inference pipeline:
+RGB Image
+    -> Resize(320)
+    -> CenterCrop(300)
+    -> ToTensor()
+    -> ImageNet Normalize
+    -> EfficientNet-B3
+    -> 10 output logits
+    -> Softmax
+    -> Predicted class + confidence
+
+Important deployment requirements:
+- Preserve the exact 10-class order in class_names.txt.
+- Use RGB input.
+- Use 300 x 300 model input.
+- Preserve ImageNet normalization values exactly.
+- Do not apply training augmentation during inference.
+- Do not change the output class mapping.
+- The model outputs one of the 10 tomato classes.
+
+FP32 baseline on held-out PlantVillage test set:
+- Test images: 2794
+- Correct predictions: 2766
+- Incorrect predictions: 28
+- Accuracy: 98.9979%
+- Macro Precision: 98.8457%
+- Macro Recall: 98.9133%
+- Macro F1: 98.8671%
+
+Note:
+The reported baseline is from the held-out PlantVillage test set.
+It should not be interpreted as guaranteed real-world field accuracy.

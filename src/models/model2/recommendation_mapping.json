@@ -1,0 +1,277 @@
+{
+    "version": "1.0",
+    "system": "Tomato Disease Recommendation System",
+    "description": "Deterministic disease information lookup used after CNN prediction.",
+    "confidence_policy": {
+        "high": {
+            "min_confidence": 0.8,
+            "action": "show_prediction_and_recommendation"
+        },
+        "moderate": {
+            "min_confidence": 0.5,
+            "max_confidence": 0.799999,
+            "action": "show_prediction_and_recommendation_with_verification_warning"
+        },
+        "low": {
+            "min_confidence": 0.0,
+            "max_confidence": 0.499999,
+            "action": "show_prediction_but_request_clearer_image_before_disease_specific_action"
+        }
+    },
+    "classes": {
+        "Tomato___Bacterial_spot": {
+            "name": "Bacterial Spot",
+            "type": "bacterial_disease",
+            "symptoms": [
+                "Small brown to dark spots on leaves",
+                "Yellow halos may surround leaf spots",
+                "Spots can occur on stems and fruit",
+                "Fruit may develop raised, corky or scabby spots"
+            ],
+            "prevention": [
+                "Use pathogen-free seed and healthy transplants",
+                "Avoid overhead irrigation when possible",
+                "Keep foliage as dry as practical",
+                "Maintain good plant spacing and airflow",
+                "Remove crop debris after the season",
+                "Rotate away from tomato and pepper"
+            ],
+            "cultural_management": [
+                "Use drip, furrow or soil-level irrigation",
+                "Avoid working with plants when foliage is wet",
+                "Remove severely affected plant material where appropriate",
+                "Sanitize pruning and handling tools",
+                "Control volunteer tomato and pepper plants"
+            ],
+            "source": "UC IPM / University of Minnesota Extension"
+        },
+        "Tomato___Early_blight": {
+            "name": "Early Blight",
+            "type": "fungal_disease",
+            "symptoms": [
+                "Dark brown spots usually begin on older lower leaves",
+                "Larger lesions may show concentric rings",
+                "Yellow tissue may surround lesions",
+                "Severe infection can cause leaf drop",
+                "Stem lesions may also show dark concentric rings"
+            ],
+            "prevention": [
+                "Use healthy planting material",
+                "Rotate away from tomato and related crops",
+                "Control tomato volunteers and susceptible weeds",
+                "Use mulch to reduce soil splash",
+                "Maintain good airflow"
+            ],
+            "cultural_management": [
+                "Water at the base of plants",
+                "Use drip or soaker irrigation",
+                "Stake or trellis plants",
+                "Remove badly affected leaves carefully",
+                "Sanitize tools after handling infected plants",
+                "Remove or bury crop residue after harvest"
+            ],
+            "source": "University of Minnesota Extension"
+        },
+        "Tomato___Late_blight": {
+            "name": "Late Blight",
+            "type": "oomycete_disease",
+            "symptoms": [
+                "Large dark brown or green-brown blotches on leaves",
+                "Lesions may have green-gray edges",
+                "Stems and petioles may become dark brown",
+                "White growth may appear under humid conditions",
+                "Fruit can develop firm dark brown lesions"
+            ],
+            "prevention": [
+                "Use healthy transplants",
+                "Monitor plants during cool and wet conditions",
+                "Remove volunteer plants and infected crop material",
+                "Maintain good airflow",
+                "Avoid prolonged leaf wetness"
+            ],
+            "cultural_management": [
+                "Use soil-level irrigation where possible",
+                "Remove infected material promptly",
+                "Avoid handling plants when foliage is wet",
+                "Improve spacing and airflow",
+                "Monitor surrounding tomato and potato crops"
+            ],
+            "source": "University of Minnesota Extension"
+        },
+        "Tomato___Leaf_Mold": {
+            "name": "Tomato Leaf Mold",
+            "type": "fungal_disease",
+            "symptoms": [
+                "Pale yellow or greenish-yellow spots on upper leaf surfaces",
+                "Olive-green to brown velvety growth on lower leaf surfaces",
+                "Older leaves are commonly affected first",
+                "Affected leaves may wither and die"
+            ],
+            "prevention": [
+                "Reduce excessive humidity",
+                "Use resistant varieties where suitable",
+                "Avoid wetting foliage",
+                "Provide adequate plant spacing",
+                "Maintain greenhouse or high-tunnel ventilation"
+            ],
+            "cultural_management": [
+                "Use drip irrigation",
+                "Improve airflow around plants",
+                "Stake, string or prune appropriately",
+                "Ventilate greenhouses and tunnels",
+                "Sanitize structures and equipment",
+                "Remove crop residue after harvest"
+            ],
+            "source": "University of Minnesota Extension"
+        },
+        "Tomato___Septoria_leaf_spot": {
+            "name": "Septoria Leaf Spot",
+            "type": "fungal_disease",
+            "symptoms": [
+                "Small circular leaf spots",
+                "Spots commonly have dark margins",
+                "Centers may be tan or gray",
+                "Small dark structures may develop in the centers",
+                "Lower leaves are commonly affected first"
+            ],
+            "prevention": [
+                "Keep foliage dry",
+                "Use mulch to reduce soil splash",
+                "Maintain good airflow",
+                "Rotate crops",
+                "Do not save seed from infected plants"
+            ],
+            "cultural_management": [
+                "Water at the base of plants",
+                "Remove affected lower leaves when appropriate",
+                "Stake or trellis plants",
+                "Remove infected plant debris",
+                "Avoid working with wet foliage"
+            ],
+            "source": "University of Minnesota Extension"
+        },
+        "Tomato___Spider_mites Two-spotted_spider_mite": {
+            "name": "Two-Spotted Spider Mites",
+            "type": "arthropod_pest",
+            "symptoms": [
+                "Fine yellow or white stippling on leaves",
+                "Leaves may become mottled or bronzed",
+                "Heavy feeding can cause leaf decline",
+                "Fine webbing may appear with larger infestations"
+            ],
+            "prevention": [
+                "Monitor plants regularly",
+                "Pay particular attention during hot and dry conditions",
+                "Avoid unnecessary plant stress",
+                "Inspect the underside of leaves",
+                "Conserve beneficial predators where possible"
+            ],
+            "cultural_management": [
+                "Maintain adequate plant moisture",
+                "Inspect plants frequently",
+                "Remove heavily damaged leaves where appropriate",
+                "Use physical washing of foliage when suitable",
+                "Use biological control where appropriate"
+            ],
+            "source": "University of Connecticut Extension"
+        },
+        "Tomato___Target_Spot": {
+            "name": "Target Spot",
+            "type": "fungal_disease",
+            "symptoms": [
+                "Brown to dark lesions on leaves",
+                "Lesions may develop concentric target-like rings",
+                "Disease can cause defoliation",
+                "Fruit may develop sunken or damaged spots"
+            ],
+            "prevention": [
+                "Start with clean and healthy transplants",
+                "Rotate with non-solanaceous crops",
+                "Remove weeds and volunteer plants",
+                "Remove plant debris that can harbor inoculum",
+                "Maintain good crop sanitation"
+            ],
+            "cultural_management": [
+                "Improve airflow around plants",
+                "Reduce prolonged leaf wetness",
+                "Use soil-level irrigation where possible",
+                "Remove infected plant material",
+                "Maintain field sanitation"
+            ],
+            "source": "University of Florida IFAS Extension"
+        },
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+            "name": "Tomato Yellow Leaf Curl Virus",
+            "type": "viral_disease",
+            "symptoms": [
+                "Leaves become small and curl upward",
+                "Strong yellowing between and along leaf veins",
+                "Leaves may become crumpled",
+                "Plants may become severely stunted",
+                "Internodes may become shortened",
+                "Flower development and fruit production may be reduced"
+            ],
+            "prevention": [
+                "Use TYLCV-resistant varieties where suitable",
+                "Use virus-free and whitefly-free transplants",
+                "Manage whitefly populations",
+                "Control weeds around production areas",
+                "Avoid planting near infected older tomato fields where practical"
+            ],
+            "cultural_management": [
+                "Monitor for whiteflies regularly",
+                "Remove infected plants when appropriate and infection incidence is low",
+                "Remove old crop residue and volunteer plants",
+                "Maintain field sanitation",
+                "Use physical barriers such as fine mesh where appropriate"
+            ],
+            "source": "UC IPM"
+        },
+        "Tomato___Tomato_mosaic_virus": {
+            "name": "Tomato Mosaic Virus",
+            "type": "viral_disease",
+            "symptoms": [
+                "Light and dark green mosaic patterns on leaves",
+                "Leaves may curl or become malformed",
+                "Plants may become stunted",
+                "Fruit may show uneven ripening or abnormal coloration"
+            ],
+            "prevention": [
+                "Use clean planting material",
+                "Use resistant varieties where available",
+                "Clean hands and tools regularly",
+                "Avoid spreading plant sap between plants",
+                "Remove infected plants to reduce sources of infection"
+            ],
+            "cultural_management": [
+                "Sanitize tools after working with infected plants",
+                "Remove suspected infected plants",
+                "Control volunteer and weed hosts where relevant",
+                "Avoid handling healthy plants immediately after infected plants",
+                "Do not expect a chemical cure for an infected plant"
+            ],
+            "source": "University of Minnesota Extension"
+        },
+        "Tomato___healthy": {
+            "name": "Healthy",
+            "type": "healthy",
+            "symptoms": [
+                "No clear disease pattern detected",
+                "No characteristic disease symptoms identified by the model"
+            ],
+            "prevention": [
+                "Continue regular crop scouting",
+                "Use healthy planting material",
+                "Maintain field sanitation",
+                "Maintain suitable irrigation and plant spacing"
+            ],
+            "cultural_management": [
+                "Maintain good airflow",
+                "Water at the soil level where practical",
+                "Monitor leaves and fruit regularly",
+                "Remove diseased plant material if symptoms appear"
+            ],
+            "source": "General extension IPM practices"
+        }
+    }
+}
